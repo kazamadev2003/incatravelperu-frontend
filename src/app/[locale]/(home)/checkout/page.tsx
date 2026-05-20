@@ -66,6 +66,7 @@ export default function CheckoutPage() {
     email: "",
     phone: "",
   })
+  const [acceptedServiceTerms, setAcceptedServiceTerms] = useState(false)
 
   const [couponCode, setCouponCode] = useState("")
   const [appliedOffer, setAppliedOffer] = useState<{ id: string; code: string; discount: number } | null>(null)
@@ -86,7 +87,7 @@ export default function CheckoutPage() {
   const onlinePaymentFee = totalBeforePaymentFee * IZIPAY_FEE_RATE
   const grandTotal = totalBeforePaymentFee + onlinePaymentFee
   const convertUsdToPen = (amount: number) => amount * USD_TO_PEN_RATE
-  const isPaymentBlockedByTravelerCount = totalTravelers <= 2
+  const isPaymentBlockedByTravelerCount = totalTravelers < 2
   const whatsappHref = `https://wa.me/${PRIMARY_RESERVATION_WHATSAPP}?text=${encodeURIComponent(
     translations.touristIzipayTitle,
   )}`
@@ -302,7 +303,12 @@ export default function CheckoutPage() {
     }
 
     if (isPaymentBlockedByTravelerCount) {
-      toast.error("Para 1 o 2 personas, la reserva debe realizarse por WhatsApp o llamada.")
+      toast.error("Para 1 persona, la reserva debe realizarse por WhatsApp o llamada.")
+      return
+    }
+
+    if (!acceptedServiceTerms) {
+      toast.error("Debes aceptar los terminos y condiciones de servicio antes de continuar.")
       return
     }
 
@@ -569,9 +575,9 @@ export default function CheckoutPage() {
                           Antes de pagar con Izipay
                         </p>
                         <p className="text-base md:text-lg leading-7 font-semibold text-red-950 mt-2">
-                          Si reservan 1 o 2 personas, el pago por Izipay no está disponible. Escriban por WhatsApp o
-                          llamen para hacer una reserva directa y evitar el cargo adicional de billetera digital. Desde
-                          3 personas pueden pagar por la plataforma con Izipay.
+                          Si reserva 1 persona, el pago por Izipay no esta disponible. Escriba por WhatsApp o llame
+                          para hacer una reserva directa y evitar el cargo adicional de billetera digital. Desde 2
+                          personas pueden pagar por la plataforma con Izipay.
                         </p>
                       </div>
                       <a
@@ -599,8 +605,6 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
-                {!isPaymentBlockedByTravelerCount && (
-                  <>
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                         {translations.fullName}
@@ -655,9 +659,28 @@ export default function CheckoutPage() {
                         placeholder="+51 999 999 999"
                       />
                     </div>
+                    <label className="flex items-start gap-3 p-4 bg-background border border-foreground/10 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={acceptedServiceTerms}
+                        onChange={(e) => setAcceptedServiceTerms(e.target.checked)}
+                        className="mt-1 h-5 w-5 accent-primary"
+                      />
+                      <span className="text-sm md:text-base leading-6 font-semibold text-foreground">
+                        Acepto los terminos y condiciones de servicio, incluyendo la penalizacion del 50% por
+                        cancelacion de reserva por costos operativos y la posibilidad de coordinar cambios de fecha
+                        sujetos a disponibilidad.
+                      </span>
+                    </label>
                     <button
                       onClick={handleInitiatePayment}
-                      disabled={paymentLoading || !customerInfo.name || !customerInfo.email}
+                      disabled={
+                        paymentLoading ||
+                        !customerInfo.name ||
+                        !customerInfo.email ||
+                        !acceptedServiceTerms ||
+                        isPaymentBlockedByTravelerCount
+                      }
                       className="w-full px-8 py-4 bg-primary text-primary-foreground text-sm font-medium tracking-widest uppercase hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
                     >
                       {paymentLoading ? (
@@ -668,12 +691,10 @@ export default function CheckoutPage() {
                       ) : (
                         <>
                           <CreditCard className="w-4 h-4" />
-                          {translations.proceedToPayment}
+                          {isPaymentBlockedByTravelerCount ? "Pago disponible desde 2 personas" : translations.proceedToPayment}
                         </>
                       )}
                     </button>
-                  </>
-                )}
               </div>
             )}
 
