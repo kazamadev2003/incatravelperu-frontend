@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { Check, ChevronDown, Menu, X } from "lucide-react"
@@ -10,30 +10,10 @@ import { useProfile } from "@/hooks/use-auth"
 import { locales, localeNames, isValidLocale, type Locale } from "@/lib/i18n/config"
 import { useTranslation } from "@/lib/i18n/context"
 
-const Marquee = ({ items }: { items: string[] }) => {
-  return (
-    <div className="bg-neon-orange text-black font-black text-xs sm:text-sm py-2 overflow-hidden flex items-center">
-      <div className="marquee-wrapper">
-        {[0, 1, 2].map((iteration) => (
-          <div key={iteration} className="marquee-content whitespace-nowrap flex shrink-0 items-center">
-            {items.map((item, i) => (
-              <span key={i} className="px-6 uppercase tracking-tighter flex items-center gap-4 shrink-0">
-                {item} <span className="text-lg">✦</span>
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
   const langMenuRef = useRef<HTMLDivElement>(null)
-  const marqueeRef = useRef<HTMLDivElement>(null)
-  const lastScrollRef = useRef(0)
 
   const { data: user } = useProfile()
   const pathname = usePathname()
@@ -75,17 +55,6 @@ const Header = () => {
     { name: dict.nav.about, href: `/${currentLocale}/about` },
   ]
 
-  const marqueeItems = [
-    dict.nav.tours,
-    dict.nav.transports,
-    dict.nav.events,
-    dict.common.offers,
-    "IZIPAY",
-    "VISA",
-    dict.common.payments,
-    dict.common.cards,
-  ]
-
   const switchLocale = (newLocale: Locale) => {
     setIsLangMenuOpen(false)
     setIsMenuOpen(false)
@@ -103,28 +72,6 @@ const Header = () => {
     const pathWithoutLocale = segments.length > 0 ? "/" + segments.join("/") : ""
     router.push(`/${newLocale}${pathWithoutLocale}`)
   }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScroll = window.scrollY
-      const scrollDelta = currentScroll - lastScrollRef.current
-
-      if (!marqueeRef.current) return
-
-      if (scrollDelta > 0 && currentScroll > 50) {
-        marqueeRef.current.classList.add("marquee-hidden")
-        marqueeRef.current.classList.remove("marquee-visible")
-      } else if (scrollDelta < 0) {
-        marqueeRef.current.classList.add("marquee-visible")
-        marqueeRef.current.classList.remove("marquee-hidden")
-      }
-
-      lastScrollRef.current = currentScroll
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   return (
     <>
@@ -237,16 +184,6 @@ const Header = () => {
               </div>
             </div>
           </div>
-
-          <div
-            ref={marqueeRef}
-            className="overflow-hidden marquee-visible transition-all duration-400"
-            style={{
-              borderRadius: "8px",
-            }}
-          >
-            <Marquee items={marqueeItems} />
-          </div>
         </div>
       </header>
 
@@ -314,3 +251,4 @@ const Header = () => {
 }
 
 export default Header
+

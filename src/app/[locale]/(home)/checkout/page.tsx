@@ -550,19 +550,25 @@ export default function CheckoutPage() {
 
             {!formTokenData && (
               <div className="bg-secondary p-6 md:p-8 space-y-4">
-                <div className="border border-foreground/10 bg-background p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                <div className="border-2 border-red-600 bg-red-600/15 p-5 md:p-6">
+                  <div className="flex items-start gap-4">
+                    <Info className="w-7 h-7 text-red-700 shrink-0 mt-1" />
                     <div className="space-y-3">
                       <div>
-                        <p className="text-sm font-semibold text-foreground">{translations.touristIzipayTitle}</p>
-                        <p className="text-xs leading-5 text-muted-foreground mt-1">{translations.touristIzipayText}</p>
+                        <p className="text-xl md:text-2xl font-black uppercase tracking-wide text-red-800">
+                          Antes de pagar con Izipay
+                        </p>
+                        <p className="text-base md:text-lg leading-7 font-semibold text-red-950 mt-2">
+                          Si reservan de 1 a 4 personas, recomendamos escribir por WhatsApp o llamar para hacer una
+                          reserva directa y evitar el cargo adicional de billetera digital. Desde 5 personas aprox.
+                          pueden pagar por la plataforma con Izipay.
+                        </p>
                       </div>
                       <a
                         href={whatsappHref}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider hover:opacity-90 transition-opacity"
+                        className="inline-flex items-center justify-center px-5 py-3 bg-red-700 text-white text-sm font-black uppercase tracking-wider hover:bg-red-800 transition-colors"
                       >
                         {translations.touristIzipayAction} {PRIMARY_RESERVATION_PHONE_DISPLAY}
                       </a>
