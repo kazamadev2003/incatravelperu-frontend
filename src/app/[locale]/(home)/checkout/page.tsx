@@ -585,6 +585,20 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
+                <div className="border-2 border-amber-500 bg-amber-500/15 p-5 md:p-6">
+                  <div className="flex items-start gap-4">
+                    <Info className="w-7 h-7 text-amber-700 shrink-0 mt-1" />
+                    <div>
+                      <p className="text-xl md:text-2xl font-black uppercase tracking-wide text-amber-900">
+                        Politicas de servicio
+                      </p>
+                      <p className="text-base md:text-lg leading-7 font-semibold text-amber-950 mt-2">
+                        La cancelacion de una reserva tiene una penalizacion del 50% por costos operativos. Los cambios
+                        de fecha se pueden coordinar sin problemas, sujetos a disponibilidad.
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 {!isPaymentBlockedByTravelerCount && (
                   <>
                     <div>
