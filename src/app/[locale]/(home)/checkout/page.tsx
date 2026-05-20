@@ -573,9 +573,6 @@ export default function CheckoutPage() {
                           llamen para hacer una reserva directa y evitar el cargo adicional de billetera digital. Desde
                           3 personas pueden pagar por la plataforma con Izipay.
                         </p>
-                        <p className="text-sm md:text-base font-black text-red-900 mt-2">
-                          Personas en esta reserva: {totalTravelers}
-                        </p>
                       </div>
                       <a
                         href={whatsappHref}
@@ -588,81 +585,85 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                    {translations.fullName}
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={customerInfo.name}
-                    onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-background border border-foreground/10 text-foreground focus:outline-none focus:border-accent transition-colors"
-                    placeholder="John Doe"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    {translations.emailAddress}
-                  </label>
-                  {user ? (
-                    <div className="w-full px-4 py-3 bg-background/50 border border-foreground/10 text-foreground rounded">
-                      {user.email}
-                    </div>
-                  ) : (
-                    <input
-                      type="email"
-                      id="email"
-                      value={customerInfo.email}
-                      onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                      className="w-full px-4 py-3 bg-background border border-foreground/10 text-foreground focus:outline-none focus:border-accent transition-colors"
-                      placeholder="juan@ejemplo.com"
-                      required
-                    />
-                  )}
-                  <div className="mt-3 flex items-start gap-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                    <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                {!isPaymentBlockedByTravelerCount && (
+                  <>
                     <div>
-                      <p className="text-sm font-medium text-blue-600">{translations.paymentConfirmationTitle}</p>
-                      <p className="text-xs text-blue-600/80 mt-1">{translations.paymentConfirmationText}</p>
+                      <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                        {translations.fullName}
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={customerInfo.name}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                        className="w-full px-4 py-3 bg-background border border-foreground/10 text-foreground focus:outline-none focus:border-accent transition-colors"
+                        placeholder="John Doe"
+                        required
+                      />
                     </div>
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
-                    {translations.phoneNumber}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={customerInfo.phone}
-                    onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                    className="w-full px-4 py-3 bg-background border border-foreground/10 text-foreground focus:outline-none focus:border-accent transition-colors"
-                    placeholder="+51 999 999 999"
-                  />
-                </div>
-                <button
-                  onClick={handleInitiatePayment}
-                  disabled={paymentLoading || !customerInfo.name || !customerInfo.email || isPaymentBlockedByTravelerCount}
-                  className="w-full px-8 py-4 bg-primary text-primary-foreground text-sm font-medium tracking-widest uppercase hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
-                >
-                  {paymentLoading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      {translations.processing}
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard className="w-4 h-4" />
-                      {isPaymentBlockedByTravelerCount ? "Pago disponible desde 3 personas" : translations.proceedToPayment}
-                    </>
-                  )}
-                </button>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                        {translations.emailAddress}
+                      </label>
+                      {user ? (
+                        <div className="w-full px-4 py-3 bg-background/50 border border-foreground/10 text-foreground rounded">
+                          {user.email}
+                        </div>
+                      ) : (
+                        <input
+                          type="email"
+                          id="email"
+                          value={customerInfo.email}
+                          onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                          className="w-full px-4 py-3 bg-background border border-foreground/10 text-foreground focus:outline-none focus:border-accent transition-colors"
+                          placeholder="juan@ejemplo.com"
+                          required
+                        />
+                      )}
+                      <div className="mt-3 flex items-start gap-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                        <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium text-blue-600">{translations.paymentConfirmationTitle}</p>
+                          <p className="text-xs text-blue-600/80 mt-1">{translations.paymentConfirmationText}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+                        {translations.phoneNumber}
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        value={customerInfo.phone}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                        className="w-full px-4 py-3 bg-background border border-foreground/10 text-foreground focus:outline-none focus:border-accent transition-colors"
+                        placeholder="+51 999 999 999"
+                      />
+                    </div>
+                    <button
+                      onClick={handleInitiatePayment}
+                      disabled={paymentLoading || !customerInfo.name || !customerInfo.email}
+                      className="w-full px-8 py-4 bg-primary text-primary-foreground text-sm font-medium tracking-widest uppercase hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+                    >
+                      {paymentLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          {translations.processing}
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="w-4 h-4" />
+                          {translations.proceedToPayment}
+                        </>
+                      )}
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
-            {formTokenData && (
+            {formTokenData && !isPaymentBlockedByTravelerCount && (
               <div className="bg-secondary p-6 md:p-8">
                 <div
                   className="kr-embedded"
