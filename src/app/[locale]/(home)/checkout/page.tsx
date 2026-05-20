@@ -77,11 +77,16 @@ export default function CheckoutPage() {
   const contentRef = useRef<HTMLDivElement>(null)
 
   const toursSubtotal = cart?.items?.reduce((sum, item) => sum + (Number(item.totalPrice) || 0), 0) || 0
+  const totalTravelers =
+    cart?.items?.reduce((sum, item) => {
+      return sum + (item.adults || 1) + (item.children || 0) + (item.infants || 0)
+    }, 0) || 0
   const discount = appliedOffer ? appliedOffer.discount : 0
   const totalBeforePaymentFee = toursSubtotal - discount
   const onlinePaymentFee = totalBeforePaymentFee * IZIPAY_FEE_RATE
   const grandTotal = totalBeforePaymentFee + onlinePaymentFee
   const convertUsdToPen = (amount: number) => amount * USD_TO_PEN_RATE
+  const isPaymentBlockedByTravelerCount = totalTravelers <= 2
   const whatsappHref = `https://wa.me/${PRIMARY_RESERVATION_WHATSAPP}?text=${encodeURIComponent(
     translations.touristIzipayTitle,
   )}`
@@ -293,6 +298,11 @@ export default function CheckoutPage() {
   const handleInitiatePayment = async () => {
     if (!cart || !customerInfo.name || !customerInfo.email) {
       setPaymentStatus("error")
+      return
+    }
+
+    if (isPaymentBlockedByTravelerCount) {
+      toast.error("Para 1 o 2 personas, la reserva debe realizarse por WhatsApp o llamada.")
       return
     }
 
@@ -559,9 +569,12 @@ export default function CheckoutPage() {
                           Antes de pagar con Izipay
                         </p>
                         <p className="text-base md:text-lg leading-7 font-semibold text-red-950 mt-2">
-                          Si reservan de 1 a 4 personas, recomendamos escribir por WhatsApp o llamar para hacer una
-                          reserva directa y evitar el cargo adicional de billetera digital. Desde 5 personas aprox.
-                          pueden pagar por la plataforma con Izipay.
+                          Si reservan 1 o 2 personas, el pago por Izipay no está disponible. Escriban por WhatsApp o
+                          llamen para hacer una reserva directa y evitar el cargo adicional de billetera digital. Desde
+                          3 personas pueden pagar por la plataforma con Izipay.
+                        </p>
+                        <p className="text-sm md:text-base font-black text-red-900 mt-2">
+                          Personas en esta reserva: {totalTravelers}
                         </p>
                       </div>
                       <a
@@ -631,7 +644,7 @@ export default function CheckoutPage() {
                 </div>
                 <button
                   onClick={handleInitiatePayment}
-                  disabled={paymentLoading || !customerInfo.name || !customerInfo.email}
+                  disabled={paymentLoading || !customerInfo.name || !customerInfo.email || isPaymentBlockedByTravelerCount}
                   className="w-full px-8 py-4 bg-primary text-primary-foreground text-sm font-medium tracking-widest uppercase hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
                 >
                   {paymentLoading ? (
@@ -642,7 +655,7 @@ export default function CheckoutPage() {
                   ) : (
                     <>
                       <CreditCard className="w-4 h-4" />
-                      {translations.proceedToPayment}
+                      {isPaymentBlockedByTravelerCount ? "Pago disponible desde 3 personas" : translations.proceedToPayment}
                     </>
                   )}
                 </button>
