@@ -16,7 +16,6 @@ import type { CreateUserDto } from "@/types/user"
 import { toast } from "sonner"
 
 const USER_ROLES = ["USER", "ADMIN"]
-const AUTH_PROVIDERS = ["local", "google", "facebook"]
 
 export default function NewUserPage() {
   const router = useRouter()

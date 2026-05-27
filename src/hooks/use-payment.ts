@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { paymentService } from "@/services/payment-service"
-import type { FormTokenResponse, CreatePaymentDto } from "@/types/payment"
+import type { FormTokenResponse, CreatePaymentDto, PaymentResult } from "@/types/payment"
 
 export function usePayment() {
   const [formTokenData, setFormTokenData] = useState<FormTokenResponse | null>(null)
@@ -28,6 +28,11 @@ export function usePayment() {
     [mutation],
   )
 
+  const verifyPaymentStatus = useCallback(
+    (orderId: string): Promise<PaymentResult> => paymentService.getPaymentStatus(orderId),
+    [],
+  )
+
   const resetPayment = useCallback(() => {
     setFormTokenData(null)
     mutation.reset()
@@ -38,6 +43,7 @@ export function usePayment() {
     isLoading: mutation.isPending,
     error: mutation.error?.message || null,
     generateFormToken,
+    verifyPaymentStatus,
     resetPayment,
   }
 }

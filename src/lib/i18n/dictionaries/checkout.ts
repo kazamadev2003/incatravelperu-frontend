@@ -52,6 +52,14 @@ export interface CheckoutDictionary {
   couponFailed: string
   couponRemoved: string
   couponSaved: string
+  onePersonToast: string
+  termsRequired: string
+  servicesPolicyTitle: string
+  servicesPolicyText: string
+  termsCheckboxLabel: string
+  paymentBlockedLabel: string
+  verifyingTitle: string
+  verifyingDescription: string
 }
 
 const dictionaries: Record<Locale, CheckoutDictionary> = {
@@ -108,6 +116,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "No se pudo aplicar el cupon. Intentalo nuevamente.",
     couponRemoved: "Cupon removido.",
     couponSaved: "Cupon aplicado. Ahorraste ${amount}.",
+    onePersonToast: "Para 1 persona, la reserva debe realizarse por WhatsApp o llamada.",
+    termsRequired: "Debes aceptar los terminos y condiciones de servicio antes de continuar.",
+    servicesPolicyTitle: "Politicas de servicio",
+    servicesPolicyText: "La cancelacion de una reserva tiene una penalizacion del 50% por costos operativos. Los cambios de fecha se pueden coordinar sin problemas, sujetos a disponibilidad.",
+    termsCheckboxLabel: "Acepto los terminos y condiciones de servicio, incluyendo la penalizacion del 50% por cancelacion de reserva por costos operativos y la posibilidad de coordinar cambios de fecha sujetos a disponibilidad.",
+    paymentBlockedLabel: "Pago disponible desde 2 personas",
+    verifyingTitle: "Verificando pago",
+    verifyingDescription: "Estamos confirmando el estado de tu pago. Por favor espera.",
   },
   en: {
     emptyTitle: "Your cart is empty",
@@ -162,6 +178,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "Failed to apply coupon. Please try again.",
     couponRemoved: "Coupon removed.",
     couponSaved: "Coupon applied. You saved ${amount}.",
+    onePersonToast: "For 1 person, the reservation must be made via WhatsApp or phone call.",
+    termsRequired: "You must accept the terms and conditions of service before continuing.",
+    servicesPolicyTitle: "Service policies",
+    servicesPolicyText: "Cancellation of a reservation carries a 50% penalty for operational costs. Date changes can be arranged without issues, subject to availability.",
+    termsCheckboxLabel: "I accept the terms and conditions of service, including the 50% cancellation penalty for operational costs and the possibility of arranging date changes subject to availability.",
+    paymentBlockedLabel: "Payment available from 2 people",
+    verifyingTitle: "Verifying payment",
+    verifyingDescription: "We are confirming the status of your payment. Please wait.",
   },
   fr: {
     emptyTitle: "Votre panier est vide",
@@ -216,6 +240,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "Impossible d'appliquer le code. Reessayez.",
     couponRemoved: "Code promo retire.",
     couponSaved: "Code promo applique. Vous economisez ${amount}.",
+    onePersonToast: "Pour 1 personne, la reservation doit etre effectuee par WhatsApp ou appel.",
+    termsRequired: "Vous devez accepter les conditions generales de service avant de continuer.",
+    servicesPolicyTitle: "Politiques de service",
+    servicesPolicyText: "L'annulation d'une reservation entraine une penalite de 50% pour frais operationnels. Les changements de date peuvent etre coordonnes sans probleme, sous reserve de disponibilite.",
+    termsCheckboxLabel: "J'accepte les conditions generales de service, y compris la penalite de 50% pour annulation et la possibilite de coordonner des changements de date sous reserve de disponibilite.",
+    paymentBlockedLabel: "Paiement disponible a partir de 2 personnes",
+    verifyingTitle: "Verification du paiement",
+    verifyingDescription: "Nous confirmons le statut de votre paiement. Veuillez patienter.",
   },
   it: {
     emptyTitle: "Il carrello e vuoto",
@@ -270,6 +302,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "Impossibile applicare il coupon. Riprova.",
     couponRemoved: "Coupon rimosso.",
     couponSaved: "Coupon applicato. Hai risparmiato ${amount}.",
+    onePersonToast: "Per 1 persona, la prenotazione deve essere effettuata via WhatsApp o telefonata.",
+    termsRequired: "Devi accettare i termini e condizioni del servizio prima di continuare.",
+    servicesPolicyTitle: "Politiche di servizio",
+    servicesPolicyText: "La cancellazione di una prenotazione comporta una penale del 50% per i costi operativi. Le modifiche di data possono essere coordinate senza problemi, soggette a disponibilita.",
+    termsCheckboxLabel: "Accetto i termini e condizioni del servizio, inclusa la penale del 50% per cancellazione e la possibilita di coordinare cambi di data soggetti a disponibilita.",
+    paymentBlockedLabel: "Pagamento disponibile da 2 persone",
+    verifyingTitle: "Verifica pagamento",
+    verifyingDescription: "Stiamo confermando lo stato del tuo pagamento. Attendi per favore.",
   },
   de: {
     emptyTitle: "Ihr Warenkorb ist leer",
@@ -324,6 +364,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "Gutschein konnte nicht angewendet werden. Bitte erneut versuchen.",
     couponRemoved: "Gutschein entfernt.",
     couponSaved: "Gutschein angewendet. Sie sparen ${amount}.",
+    onePersonToast: "Fuer 1 Person muss die Reservierung per WhatsApp oder Anruf erfolgen.",
+    termsRequired: "Sie muessen die Servicebedingungen akzeptieren, bevor Sie fortfahren.",
+    servicesPolicyTitle: "Servicebedingungen",
+    servicesPolicyText: "Die Stornierung einer Reservierung hat eine Strafgebuehr von 50% fuer Betriebskosten. Datumsaenderungen koennen problemlos koordiniert werden, vorbehaltlich der Verfuegbarkeit.",
+    termsCheckboxLabel: "Ich akzeptiere die Servicebedingungen, einschliesslich der 50% Stornierungsgebuehr fuer Betriebskosten und der Moeglichkeit, Datumsaenderungen vorbehaltlich der Verfuegbarkeit zu koordinieren.",
+    paymentBlockedLabel: "Zahlung ab 2 Personen verfuegbar",
+    verifyingTitle: "Zahlung wird geprueft",
+    verifyingDescription: "Wir bestaetigen den Status Ihrer Zahlung. Bitte warten.",
   },
   pt: {
     emptyTitle: "Seu carrinho esta vazio",
@@ -378,6 +426,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "Nao foi possivel aplicar o cupom. Tente novamente.",
     couponRemoved: "Cupom removido.",
     couponSaved: "Cupom aplicado. Voce economizou ${amount}.",
+    onePersonToast: "Para 1 pessoa, a reserva deve ser feita por WhatsApp ou ligacao.",
+    termsRequired: "Voce deve aceitar os termos e condicoes de servico antes de continuar.",
+    servicesPolicyTitle: "Politicas de servico",
+    servicesPolicyText: "O cancelamento de uma reserva tem uma penalidade de 50% por custos operacionais. Mudancas de data podem ser coordenadas sem problemas, sujeitas a disponibilidade.",
+    termsCheckboxLabel: "Aceito os termos e condicoes de servico, incluindo a penalidade de 50% por cancelamento e a possibilidade de coordenar mudancas de data sujeitas a disponibilidade.",
+    paymentBlockedLabel: "Pagamento disponivel a partir de 2 pessoas",
+    verifyingTitle: "Verificando pagamento",
+    verifyingDescription: "Estamos confirmando o status do seu pagamento. Por favor aguarde.",
   },
   zh: {
     emptyTitle: "购物车为空",
@@ -432,6 +488,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "无法应用优惠码，请重试。",
     couponRemoved: "优惠码已移除。",
     couponSaved: "优惠码已应用。您节省了 ${amount}。",
+    onePersonToast: "1人预订需通过WhatsApp或电话完成。",
+    termsRequired: "继续前请接受服务条款。",
+    servicesPolicyTitle: "服务政策",
+    servicesPolicyText: "取消预订将产生50%的运营费用罚款。日期变更可以协商安排，以可用性为准。",
+    termsCheckboxLabel: "我接受服务条款，包括因运营成本取消预订的50%罚款，以及在可用性许可下协调日期变更的可能性。",
+    paymentBlockedLabel: "支付需2人起",
+    verifyingTitle: "正在验证付款",
+    verifyingDescription: "正在确认您的付款状态，请稍候。",
   },
   ja: {
     emptyTitle: "カートは空です",
@@ -486,6 +550,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "クーポンを適用できませんでした。再試行してください。",
     couponRemoved: "クーポンを削除しました。",
     couponSaved: "クーポンを適用しました。${amount} 節約しました。",
+    onePersonToast: "1名の予約はWhatsAppまたはお電話でお願いします。",
+    termsRequired: "続行する前にサービス利用規約に同意してください。",
+    servicesPolicyTitle: "サービスポリシー",
+    servicesPolicyText: "予約のキャンセルは運営費用として50%のペナルティが発生します。日程変更は空き状況に応じて柔軟に対応可能です。",
+    termsCheckboxLabel: "運営費用のキャンセルペナルティ50%と、空き状況に応じた日程変更調整の可能性を含むサービス利用規約に同意します。",
+    paymentBlockedLabel: "2名以上からお支払い可能",
+    verifyingTitle: "支払い確認中",
+    verifyingDescription: "お支払いの状況を確認しています。しばらくお待ちください。",
   },
   ru: {
     emptyTitle: "Корзина пуста",
@@ -540,6 +612,14 @@ const dictionaries: Record<Locale, CheckoutDictionary> = {
     couponFailed: "Не удалось применить промокод. Попробуйте снова.",
     couponRemoved: "Промокод удален.",
     couponSaved: "Промокод применен. Вы сэкономили ${amount}.",
+    onePersonToast: "Для 1 человека бронирование выполняется через WhatsApp или по телефону.",
+    termsRequired: "Необходимо принять условия обслуживания перед продолжением.",
+    servicesPolicyTitle: "Условия обслуживания",
+    servicesPolicyText: "Отмена бронирования влечет штраф 50% за операционные расходы. Изменение дат можно согласовать без проблем при наличии мест.",
+    termsCheckboxLabel: "Я принимаю условия обслуживания, включая штраф 50% за отмену бронирования и возможность согласования изменения дат при наличии мест.",
+    paymentBlockedLabel: "Оплата доступна от 2 человек",
+    verifyingTitle: "Проверка оплаты",
+    verifyingDescription: "Подтверждаем статус вашего платежа. Пожалуйста, подождите.",
   },
 }
 

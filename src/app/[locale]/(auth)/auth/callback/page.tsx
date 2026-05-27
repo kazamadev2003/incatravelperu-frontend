@@ -2,20 +2,20 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/constants";
 
 export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("http://localhost:4002/api/auth/profile", {
-      credentials: "include", // 👈 IMPORTANTE: envía la cookie HttpOnly
+    fetch(`${API_BASE_URL}/auth/profile`, {
+      credentials: "include",
     })
       .then(async (res) => {
         if (!res.ok) throw new Error("No autorizado");
         return res.json();
       })
-      .then((user) => {
-        console.log("Usuario autenticado:", user);
+      .then(() => {
         router.replace("/dashboard");
       })
       .catch(() => {

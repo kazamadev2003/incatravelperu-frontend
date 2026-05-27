@@ -15,7 +15,7 @@ import Image from "next/image"
 import { toast } from "sonner"
 import { OrderStatus, PaymentStatus } from "@/types/order"
 import { useTranslation } from "@/lib/i18n/context"
-import { PRIMARY_RESERVATION_PHONE_DISPLAY, PRIMARY_RESERVATION_WHATSAPP } from "@/lib/constants"
+import { PRIMARY_RESERVATION_PHONE_DISPLAY, PRIMARY_RESERVATION_WHATSAPP, USD_TO_PEN_RATE, IZIPAY_FEE_RATE } from "@/lib/constants"
 
 declare global {
   interface Window {
@@ -30,8 +30,17 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const USD_TO_PEN_RATE = 3.6
-const IZIPAY_FEE_RATE = 0.05
+const IZIPAY_LOCALE_MAP: Record<string, string> = {
+  es: "es-ES",
+  en: "en-EN",
+  fr: "fr-FR",
+  it: "it-IT",
+  de: "de-DE",
+  pt: "pt-BR",
+  zh: "zh-CN",
+  ja: "ja-JP",
+  ru: "ru-RU",
+}
 
 const getProductTitle = (item: CartItem): string => {
   if (typeof item.productId === "object" && item.productId && "title" in item.productId) {
@@ -58,7 +67,7 @@ export default function CheckoutPage() {
   const translations = dictionary.checkout
   const { cart, isLoading: cartLoading } = useCart()
   const { data: user } = useProfile()
-  const { formTokenData, isLoading: paymentLoading, error: paymentError, generateFormToken } = usePayment()
+  const { formTokenData, isLoading: paymentLoading, error: paymentError, generateFormToken, verifyPaymentStatus } = usePayment()
   const [paymentStatus, setPaymentStatus] = useState("idle")
   const [mounted, setMounted] = useState(false)
   const [customerInfo, setCustomerInfo] = useState({
@@ -170,7 +179,7 @@ export default function CheckoutPage() {
     script.src = "https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
     script.async = true
     script.setAttribute("kr-public-key", formTokenData.publicKey)
-    script.setAttribute("kr-language", "es-ES")
+    script.setAttribute("kr-language", IZIPAY_LOCALE_MAP[locale] ?? "es-ES")
 
     const scriptClassic = document.createElement("script")
     scriptClassic.src = "https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js"
@@ -181,14 +190,15 @@ export default function CheckoutPage() {
 
     script.onload = () => {
       if (window.KR) {
-        window.KR.onSubmit((paymentData: unknown) => {
-          console.log("[v0] Payment submitted:", paymentData)
-          setPaymentStatus("success")
+        window.KR.onSubmit(() => {
+          setPaymentStatus("verifying")
+          verifyPaymentStatus(formTokenData.orderId)
+            .then((result) => setPaymentStatus(result.success ? "success" : "error"))
+            .catch(() => setPaymentStatus("error"))
           return false
         })
 
-        window.KR.onError((error: unknown) => {
-          console.error("[v0] Payment error:", error)
+        window.KR.onError(() => {
           setPaymentStatus("error")
         })
       }
@@ -198,7 +208,7 @@ export default function CheckoutPage() {
       if (document.body.contains(script)) document.body.removeChild(script)
       if (document.body.contains(scriptClassic)) document.body.removeChild(scriptClassic)
     }
-  }, [formTokenData])
+  }, [formTokenData, locale, verifyPaymentStatus])
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) {
@@ -222,8 +232,7 @@ export default function CheckoutPage() {
         discount: offer.value || 0,
       })
       toast.success(translations.couponSaved.replace("{amount}", (offer.value?.toFixed(2) || 0).toString()))
-    } catch (error) {
-      console.error("[v0] Error applying coupon:", error)
+    } catch {
       toast.error(translations.couponFailed)
     } finally {
       setCouponLoading(false)
@@ -253,19 +262,11 @@ export default function CheckoutPage() {
       } else if (item.productId && typeof item.productId === "object" && "_id" in item.productId) {
         productIdString = String(item.productId._id)
       } else {
-        console.error("[v0] Invalid productId format:", item.productId)
         productIdString = String(item.productId)
       }
 
       const normalizedProductType = (item.productType.charAt(0).toUpperCase() +
         item.productType.slice(1).toLowerCase()) as "Tour" | "Transport"
-
-      console.log("[v0] Processing item:", {
-        originalProductId: item.productId,
-        extractedProductId: productIdString,
-        originalProductType: item.productType,
-        normalizedProductType: normalizedProductType,
-      })
 
       return {
         productId: productIdString,
@@ -303,12 +304,12 @@ export default function CheckoutPage() {
     }
 
     if (isPaymentBlockedByTravelerCount) {
-      toast.error("Para 1 persona, la reserva debe realizarse por WhatsApp o llamada.")
+      toast.error(translations.onePersonToast)
       return
     }
 
     if (!acceptedServiceTerms) {
-      toast.error("Debes aceptar los terminos y condiciones de servicio antes de continuar.")
+      toast.error(translations.termsRequired)
       return
     }
 
@@ -326,17 +327,8 @@ export default function CheckoutPage() {
         })),
       }
 
-      console.log("[v0] COMPLETE Order data being sent to Izipay:", JSON.stringify(orderDataInPEN, null, 2))
-      console.log("[v0] Order items count:", orderDataInPEN.items.length)
-      console.log("[v0] Customer info:", {
-        name: orderDataInPEN.customerName,
-        email: orderDataInPEN.customerEmail,
-        phone: orderDataInPEN.customerPhone,
-      })
-
       await generateFormToken({ orderData: orderDataInPEN })
-    } catch (err) {
-      console.error("[v0] Error initializing payment:", err)
+    } catch {
       setPaymentStatus("error")
     }
   }
@@ -365,6 +357,20 @@ export default function CheckoutPage() {
             <ArrowLeft className="w-4 h-4" />
             {translations.browseTours}
           </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (paymentStatus === "verifying") {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+            <Loader2 className="w-10 h-10 text-accent animate-spin" />
+          </div>
+          <h1 className="text-3xl md:text-4xl font-serif text-foreground mb-4">{translations.verifyingTitle}</h1>
+          <p className="text-muted-foreground">{translations.verifyingDescription}</p>
         </div>
       </div>
     )
@@ -572,12 +578,10 @@ export default function CheckoutPage() {
                     <div className="space-y-3">
                       <div>
                         <p className="text-xl md:text-2xl font-black uppercase tracking-wide text-red-800">
-                          Antes de pagar con Izipay
+                          {translations.touristIzipayTitle}
                         </p>
                         <p className="text-base md:text-lg leading-7 font-semibold text-red-950 mt-2">
-                          Si reserva 1 persona, el pago por Izipay no esta disponible. Escriba por WhatsApp o llame
-                          para hacer una reserva directa y evitar el cargo adicional de billetera digital. Desde 2
-                          personas pueden pagar por la plataforma con Izipay.
+                          {translations.touristIzipayText}
                         </p>
                       </div>
                       <a
@@ -596,11 +600,10 @@ export default function CheckoutPage() {
                     <Info className="w-7 h-7 text-amber-700 shrink-0 mt-1" />
                     <div>
                       <p className="text-xl md:text-2xl font-black uppercase tracking-wide text-amber-900">
-                        Politicas de servicio
+                        {translations.servicesPolicyTitle}
                       </p>
                       <p className="text-base md:text-lg leading-7 font-semibold text-amber-950 mt-2">
-                        La cancelacion de una reserva tiene una penalizacion del 50% por costos operativos. Los cambios
-                        de fecha se pueden coordinar sin problemas, sujetos a disponibilidad.
+                        {translations.servicesPolicyText}
                       </p>
                     </div>
                   </div>
@@ -667,9 +670,7 @@ export default function CheckoutPage() {
                         className="mt-1 h-5 w-5 accent-primary"
                       />
                       <span className="text-sm md:text-base leading-6 font-semibold text-foreground">
-                        Acepto los terminos y condiciones de servicio, incluyendo la penalizacion del 50% por
-                        cancelacion de reserva por costos operativos y la posibilidad de coordinar cambios de fecha
-                        sujetos a disponibilidad.
+                        {translations.termsCheckboxLabel}
                       </span>
                     </label>
                     <button
@@ -691,7 +692,7 @@ export default function CheckoutPage() {
                       ) : (
                         <>
                           <CreditCard className="w-4 h-4" />
-                          {isPaymentBlockedByTravelerCount ? "Pago disponible desde 2 personas" : translations.proceedToPayment}
+                          {isPaymentBlockedByTravelerCount ? translations.paymentBlockedLabel : translations.proceedToPayment}
                         </>
                       )}
                     </button>
@@ -703,7 +704,7 @@ export default function CheckoutPage() {
                 <div
                   className="kr-embedded"
                   kr-form-token={formTokenData.formToken}
-                  kr-post-url-success="/checkout/success"
+                  kr-post-url-success={`/${locale}/checkout/success`}
                 />
               </div>
             )}
