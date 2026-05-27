@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config";
 import { UserRole } from "@/types/auth";
+import { COOKIE_DOMAIN } from "@/lib/constants";
 export const runtime = "nodejs";
 
 // PUBLIC ROUTES
@@ -54,7 +55,7 @@ const COOKIE_DELETE_OPTIONS = {
   secure: true,
   sameSite: "none" as const,
   path: "/",
-  domain: ".cabanacondecuscobybus.com",
+  domain: COOKIE_DOMAIN,
   maxAge: 0,
 };
 

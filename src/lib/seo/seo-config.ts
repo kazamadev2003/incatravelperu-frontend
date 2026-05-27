@@ -1,218 +1,296 @@
-import type { Metadata } from "next"
-import type { Locale } from "@/lib/i18n/config"
+import type { Metadata } from "next";
+import type { Locale } from "@/lib/i18n/config";
 
-const locales = ["es", "en", "fr", "it", "de", "pt", "zh", "ja", "ru"] as const
-type LocaleSEOType = "home" | "tours" | "transports" | "transport-private" | "experiences"
+const locales = ["es", "en", "fr", "it", "de", "pt", "zh", "ja", "ru"] as const;
+type LocaleSEOType =
+  | "home"
+  | "tours"
+  | "transports"
+  | "transport-private"
+  | "experiences";
 
 export const siteConfig = {
   name: "Inca Travel Peru - Tourism & Transport Booking",
   description: "Book tours and transportation services worldwide. Find the best travel experiences.",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://cabanacondecuscobybus.com",
   ogImage: "https://res.cloudinary.com/ddbzpbrje/image/upload/v1767086141/ChatGPT_Image_30_dic_2025_04_15_12_b1t3nf.png",
-}
+};
 
 function absoluteUrl(pathOrUrl: string): string {
-  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) return pathOrUrl
-  return `${siteConfig.url}${pathOrUrl.startsWith("/") ? "" : "/"}${pathOrUrl}`
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://"))
+    return pathOrUrl;
+  return `${siteConfig.url}${pathOrUrl.startsWith("/") ? "" : "/"}${pathOrUrl}`;
 }
 
 export const seoTranslations: Record<
   Locale,
   {
-    title: string
-    description: string
-    keywords: string[]
-    toursTitle: string
-    toursDescription: string
-    transportsTitle: string
-    transportsDescription: string
-    privateTransportsTitle: string
-    privateTransportsDescription: string
-    experiencesTitle: string
-    experiencesDescription: string
+    title: string;
+    description: string;
+    keywords: string[];
+    toursTitle: string;
+    toursDescription: string;
+    transportsTitle: string;
+    transportsDescription: string;
+    privateTransportsTitle: string;
+    privateTransportsDescription: string;
+    experiencesTitle: string;
+    experiencesDescription: string;
   }
 > = {
   es: {
     title: "Inca Travel Peru - Reserva Tours y Transporte | Viajes Internacionales",
     description:
-      "Descubre y reserva los mejores tours y servicios de transporte en todo el mundo. Experiencias de viaje auténticas y asequibles.",
-    keywords: ["tours", "viajes", "transporte", "reservas", "turismo", "vacaciones", "experiencias"],
+      "Reserva el bus Chivay Cusco o Cusco Chivay con salidas diarias. Tours al Cañón del Colca, Cabanaconde, Cusco y Arequipa. Precios accesibles y reserva en línea.",
+    keywords: [
+      "Chivay Cusco",
+      "Cusco Chivay",
+      "bus Chivay Cusco",
+      "transporte Cusco Chivay",
+      "Cabanaconde Cusco",
+      "Colca Canyon",
+      "tour Colca",
+      "bus Colca Cusco",
+      "transporte Chivay",
+      "Cabanaconde Cusco",
+      "tours Cusco",
+      "transporte Cusco",
+    ],
     toursTitle: "Tours Turísticos | Explora Destinos Increíbles | Inca Travel Peru",
     toursDescription:
-      "Descubre tours auténticos en destinos fascinantes. Guías locales experientes, precios competitivos y reservas seguras.",
+      "Explora tours desde Cusco al Cañón del Colca, Chivay y Cabanaconde. Guías locales, salidas diarias y reservas seguras en línea.",
     transportsTitle: "Transporte de Viajes | Buses, Taxis y Traslados | Inca Travel Peru",
     transportsDescription:
-      "Reserva transporte confiable para tus viajes. Opciones de traslados, buses y servicios de transporte profesionales.",
+      "Reserva el bus Chivay Cusco o Cusco Chivay. Salidas diarias, precios económicos y servicio directo entre Cusco, Chivay, Cabanaconde y el Cañón del Colca.",
     privateTransportsTitle: "Transporte Privado en Cusco | Traslados Directos | Inca Travel Peru",
     privateTransportsDescription:
-      "Reserva transporte privado en Cusco y rutas turisticas con atencion directa por WhatsApp, horarios flexibles y vehiculos para grupos.",
+      "Transporte privado Cusco Chivay con atención por WhatsApp, horarios flexibles y vehículos para grupos. Ruta directa Cusco - Chivay - Cabanaconde.",
     experiencesTitle: "Experiencias en Peru | Tours y Actividades Locales | Inca Travel Peru",
     experiencesDescription:
-      "Explora experiencias seleccionadas en Peru: rutas culturales, aventura, naturaleza y reservas directas para viajeros y grupos.",
+      "Vive experiencias únicas en Cusco, Chivay y el Cañón del Colca. Rutas culturales, avistamiento de cóndores, aventura y naturaleza.",
   },
   en: {
-    title: "Inca Travel Peru - Book Tours & Transportation | Global Travel Booking",
+    title: "Inca Travel Peru - Book Tours & Transport | International Travel",
     description:
-      "Discover and book the best tours and transportation services worldwide. Authentic travel experiences at affordable prices.",
-    keywords: ["tours", "travel", "transportation", "booking", "tourism", "vacations", "experiences"],
-    toursTitle: "Tours & Activities | Explore Amazing Destinations | Inca Travel Peru",
+      "Book the Chivay Cusco or Cusco Chivay bus with daily departures. Tours to Colca Canyon, Cabanaconde, Cusco and Arequipa. Affordable prices and online booking.",
+    keywords: [
+      "Chivay Cusco", "Cusco Chivay", "Chivay Cusco bus", "Cusco Chivay transport",
+      "Cabanaconde Cusco", "Colca Canyon", "Colca tour", "Colca Cusco bus",
+      "Chivay transport", "Cabanaconde Cusco", "Cusco tours", "Cusco transport",
+    ],
+    toursTitle: "Tourism Tours | Explore Incredible Destinations | Inca Travel Peru",
     toursDescription:
-      "Discover authentic tours in fascinating destinations. Expert local guides, competitive prices, and secure bookings.",
-    transportsTitle: "Travel Transportation | Buses, Taxis & Transfers | Inca Travel Peru",
+      "Explore tours from Cusco to Colca Canyon, Chivay and Cabanaconde. Local guides, daily departures and secure online bookings.",
+    transportsTitle: "Travel Transport | Buses, Taxis & Transfers | Inca Travel Peru",
     transportsDescription:
-      "Book reliable transportation for your travels. Transfer services, buses, and professional transport options.",
+      "Book the Chivay Cusco or Cusco Chivay bus. Daily departures, affordable prices and direct service between Cusco, Chivay, Cabanaconde and Colca Canyon.",
     privateTransportsTitle: "Private Transport in Cusco | Direct Transfers | Inca Travel Peru",
     privateTransportsDescription:
-      "Book private transport in Cusco and tourist routes with direct WhatsApp support, flexible schedules, and vehicles for groups.",
-    experiencesTitle: "Experiences in Peru | Tours and Local Activities | Inca Travel Peru",
+      "Private transport Cusco Chivay with WhatsApp support, flexible schedules and vehicles for groups. Direct route Cusco - Chivay - Cabanaconde.",
+    experiencesTitle: "Experiences in Peru | Tours & Local Activities | Inca Travel Peru",
     experiencesDescription:
-      "Explore curated experiences in Peru: culture, adventure, nature, and direct reservations for travelers and groups.",
+      "Live unique experiences in Cusco, Chivay and Colca Canyon. Cultural routes, condor watching, adventure and nature.",
   },
   fr: {
-    title: "Inca Travel Peru - Réservez Excursions et Transports | Voyages Internationaux",
+    title: "Inca Travel Peru - Réservez Tours et Transport | Voyages Internationaux",
     description:
-      "Découvrez et réservez les meilleures excursions et services de transport dans le monde. Expériences de voyage authentiques.",
-    keywords: ["tours", "voyage", "transport", "réservation", "tourisme", "vacances", "expériences"],
-    toursTitle: "Excursions & Activités | Explorez Destinations Fascinantes | Inca Travel Peru",
+      "Réservez le bus Chivay Cusco ou Cusco Chivay avec des départs quotidiens. Tours au Canyon Colca, Cabanaconde, Cusco et Arequipa. Prix abordables et réservation en ligne.",
+    keywords: [
+      "Chivay Cusco", "Cusco Chivay", "bus Chivay Cusco", "transport Cusco Chivay",
+      "Cabanaconde Cusco", "Canyon Colca", "tour Colca", "bus Colca Cusco",
+      "transport Chivay", "Cabanaconde Cusco", "tours Cusco", "transport Cusco",
+    ],
+    toursTitle: "Tours Touristiques | Explorez des Destinations Incroyables | Inca Travel Peru",
     toursDescription:
-      "Découvrez des excursions authentiques dans des destinations fascinantes. Guides locaux experts et réservations sécurisées.",
-    transportsTitle: "Transport de Voyage | Bus, Taxis & Transferts | Inca Travel Peru",
+      "Explorez des tours de Cusco vers le Canyon Colca, Chivay et Cabanaconde. Guides locaux, départs quotidiens et réservations sécurisées en ligne.",
+    transportsTitle: "Transport de Voyage | Bus, Taxis et Transferts | Inca Travel Peru",
     transportsDescription:
-      "Réservez un transport fiable pour vos voyages. Services de transfert, bus et options de transport professionnel.",
-    privateTransportsTitle: "Transport Prive a Cusco | Transferts Directs | Inca Travel Peru",
+      "Réservez le bus Chivay Cusco ou Cusco Chivay. Départs quotidiens, prix économiques et service direct entre Cusco, Chivay, Cabanaconde et le Canyon Colca.",
+    privateTransportsTitle: "Transport Privé à Cusco | Transferts Directs | Inca Travel Peru",
     privateTransportsDescription:
-      "Reservez un transport prive a Cusco et des routes touristiques avec assistance WhatsApp, horaires flexibles et vehicules pour groupes.",
-    experiencesTitle: "Experiences au Perou | Tours et Activites Locales | Inca Travel Peru",
+      "Transport privé Cusco Chivay avec assistance WhatsApp, horaires flexibles et véhicules pour groupes. Route directe Cusco - Chivay - Cabanaconde.",
+    experiencesTitle: "Expériences au Pérou | Tours et Activités Locales | Inca Travel Peru",
     experiencesDescription:
-      "Explorez des experiences selectionnees au Perou: culture, aventure, nature et reservations directes pour voyageurs et groupes.",
+      "Vivez des expériences uniques à Cusco, Chivay et le Canyon Colca. Routes culturelles, observation de condors, aventure et nature.",
   },
   it: {
-    title: "Inca Travel Peru - Prenota Tour e Trasporti | Prenotazioni Viaggi Globali",
+    title: "Inca Travel Peru - Prenota Tour e Trasporti | Viaggi Internazionali",
     description:
-      "Scopri e prenota i migliori tour e servizi di trasporto in tutto il mondo. Esperienze di viaggio autentiche a prezzi convenienti.",
-    keywords: ["tour", "viaggio", "trasporto", "prenotazione", "turismo", "vacanze", "esperienze"],
-    toursTitle: "Tour e Attività | Esplora Destinazioni Incredibili | Inca Travel Peru",
+      "Prenota il bus Chivay Cusco o Cusco Chivay con partenze giornaliere. Tour al Canyon Colca, Cabanaconde, Cusco e Arequipa. Prezzi accessibili e prenotazione online.",
+    keywords: [
+      "Chivay Cusco", "Cusco Chivay", "bus Chivay Cusco", "trasporto Cusco Chivay",
+      "Cabanaconde Cusco", "Canyon Colca", "tour Colca", "bus Colca Cusco",
+      "trasporto Chivay", "Cabanaconde Cusco", "tour Cusco", "trasporto Cusco",
+    ],
+    toursTitle: "Tour Turistici | Esplora Destinazioni Incredibili | Inca Travel Peru",
     toursDescription:
-      "Scopri tour autentici in destinazioni affascinanti. Guide locali esperte, prezzi competitivi e prenotazioni sicure.",
-    transportsTitle: "Trasporto Viaggi | Autobus, Taxi e Trasferimenti | Inca Travel Peru",
+      "Esplora tour da Cusco al Canyon Colca, Chivay e Cabanaconde. Guide locali, partenze giornaliere e prenotazioni sicure online.",
+    transportsTitle: "Trasporto di Viaggio | Bus, Taxi e Transfer | Inca Travel Peru",
     transportsDescription:
-      "Prenota trasporti affidabili per i tuoi viaggi. Servizi di trasferimento, autobus e opzioni di trasporto professionali.",
+      "Prenota il bus Chivay Cusco o Cusco Chivay. Partenze giornaliere, prezzi economici e servizio diretto tra Cusco, Chivay, Cabanaconde e il Canyon Colca.",
     privateTransportsTitle: "Trasporto Privato a Cusco | Transfer Diretti | Inca Travel Peru",
     privateTransportsDescription:
-      "Prenota trasporto privato a Cusco e rotte turistiche con supporto WhatsApp, orari flessibili e veicoli per gruppi.",
-    experiencesTitle: "Esperienze in Peru | Tour e Attivita Locali | Inca Travel Peru",
+      "Trasporto privato Cusco Chivay con supporto WhatsApp, orari flessibili e veicoli per gruppi. Rotta diretta Cusco - Chivay - Cabanaconde.",
+    experiencesTitle: "Esperienze in Perù | Tour e Attività Locali | Inca Travel Peru",
     experiencesDescription:
-      "Scopri esperienze selezionate in Peru: cultura, avventura, natura e prenotazioni dirette per viaggiatori e gruppi.",
+      "Vivi esperienze uniche a Cusco, Chivay e nel Canyon Colca. Percorsi culturali, avvistamento condor, avventura e natura.",
   },
   de: {
-    title: "Inca Travel Peru - Tours & Transport Buchen | Globale Reisebuchung",
+    title: "Inca Travel Peru - Tours & Transport buchen | Internationale Reisen",
     description:
-      "Entdecke und buche die besten Touren und Transportservices weltweit. Authentische Reiseerlebnisse zu erschwinglichen Preisen.",
-    keywords: ["touren", "reisen", "transport", "buchung", "tourismus", "ferien", "erlebnisse"],
-    toursTitle: "Touren & Aktivitäten | Erkunde Faszinierende Ziele | Inca Travel Peru",
+      "Buche den Bus Chivay Cusco oder Cusco Chivay mit täglichen Abfahrten. Touren zum Colca Canyon, Cabanaconde, Cusco und Arequipa. Günstige Preise und Online-Buchung.",
+    keywords: [
+      "Chivay Cusco", "Cusco Chivay", "Bus Chivay Cusco", "Transport Cusco Chivay",
+      "Cabanaconde Cusco", "Colca Canyon", "Colca Tour", "Bus Colca Cusco",
+      "Transport Chivay", "Cabanaconde Cusco", "Cusco Touren", "Transport Cusco",
+    ],
+    toursTitle: "Touristische Touren | Entdecke Unglaubliche Ziele | Inca Travel Peru",
     toursDescription:
-      "Entdecke authentische Touren an faszinierenden Reisezielen. Erfahrene lokale Guides, wettbewerbsfähige Preise und sichere Buchungen.",
-    transportsTitle: "Reistransport | Busse, Taxis & Transfers | Inca Travel Peru",
+      "Entdecke Touren von Cusco zum Colca Canyon, Chivay und Cabanaconde. Lokale Guides, tägliche Abfahrten und sichere Online-Buchungen.",
+    transportsTitle: "Reise-Transport | Busse, Taxis & Transfers | Inca Travel Peru",
     transportsDescription:
-      "Buche zuverlässigen Transport für deine Reisen. Transferservices, Busse und professionelle Transportoptionen.",
+      "Buche den Bus Chivay Cusco oder Cusco Chivay. Tägliche Abfahrten, günstige Preise und Direktservice zwischen Cusco, Chivay, Cabanaconde und dem Colca Canyon.",
     privateTransportsTitle: "Privater Transport in Cusco | Direkte Transfers | Inca Travel Peru",
     privateTransportsDescription:
-      "Buchen Sie privaten Transport in Cusco und touristische Routen mit WhatsApp-Betreuung, flexiblen Zeiten und Fahrzeugen fuer Gruppen.",
-    experiencesTitle: "Erlebnisse in Peru | Touren und Lokale Aktivitaeten | Inca Travel Peru",
+      "Privater Transport Cusco Chivay mit WhatsApp-Betreuung, flexiblen Zeiten und Fahrzeugen für Gruppen. Direktroute Cusco - Chivay - Cabanaconde.",
+    experiencesTitle: "Erlebnisse in Peru | Touren & Lokale Aktivitäten | Inca Travel Peru",
     experiencesDescription:
-      "Entdecken Sie ausgewaehlte Erlebnisse in Peru: Kultur, Abenteuer, Natur und direkte Reservierung fuer Reisende und Gruppen.",
+      "Erlebe einzigartige Erlebnisse in Cusco, Chivay und dem Colca Canyon. Kulturrouten, Kondorbeobachtung, Abenteuer und Natur.",
   },
   pt: {
-    title: "Inca Travel Peru - Reserve Tours e Transporte | Reservas de Viagem Global",
+    title: "Inca Travel Peru - Reserve Tours e Transporte | Viagens Internacionais",
     description:
-      "Descubra e reserve os melhores tours e serviços de transporte em todo o mundo. Experiências de viagem autênticas a preços acessíveis.",
-    keywords: ["tours", "viagem", "transporte", "reserva", "turismo", "férias", "experiências"],
-    toursTitle: "Tours e Atividades | Explore Destinos Incríveis | Inca Travel Peru",
+      "Reserve o ônibus Chivay Cusco ou Cusco Chivay com saídas diárias. Tours ao Cañón del Colca, Cabanaconde, Cusco e Arequipa. Preços acessíveis e reserva online.",
+    keywords: [
+      "Chivay Cusco", "Cusco Chivay", "ônibus Chivay Cusco", "transporte Cusco Chivay",
+      "Cabanaconde Cusco", "Cañón del Colca", "tour Colca", "ônibus Colca Cusco",
+      "transporte Chivay", "Cabanaconde Cusco", "tours Cusco", "transporte Cusco",
+    ],
+    toursTitle: "Tours Turísticos | Explore Destinos Incríveis | Inca Travel Peru",
     toursDescription:
-      "Descubra tours autênticos em destinos fascinantes. Guias locais experientes, preços competitivos e reservas seguras.",
-    transportsTitle: "Transporte de Viagem | Ônibus, Táxis e Transferências | Inca Travel Peru",
+      "Explore tours de Cusco ao Cañón del Colca, Chivay e Cabanaconde. Guias locais, saídas diárias e reservas seguras online.",
+    transportsTitle: "Transporte de Viagem | Ônibus, Táxis e Traslados | Inca Travel Peru",
     transportsDescription:
-      "Reserve transporte confiável para suas viagens. Serviços de transferência, ônibus e opções de transporte profissional.",
+      "Reserve o ônibus Chivay Cusco ou Cusco Chivay. Saídas diárias, preços econômicos e serviço direto entre Cusco, Chivay, Cabanaconde e o Cañón del Colca.",
     privateTransportsTitle: "Transporte Privado em Cusco | Traslados Diretos | Inca Travel Peru",
     privateTransportsDescription:
-      "Reserve transporte privado em Cusco e rotas turisticas com atendimento via WhatsApp, horarios flexiveis e veiculos para grupos.",
-    experiencesTitle: "Experiencias no Peru | Passeios e Atividades Locais | Inca Travel Peru",
+      "Transporte privado Cusco Chivay com atendimento WhatsApp, horários flexíveis e veículos para grupos. Rota direta Cusco - Chivay - Cabanaconde.",
+    experiencesTitle: "Experiências no Peru | Tours e Atividades Locais | Inca Travel Peru",
     experiencesDescription:
-      "Explore experiencias selecionadas no Peru: cultura, aventura, natureza e reservas diretas para viajantes e grupos.",
+      "Viva experiências únicas em Cusco, Chivay e no Cañón del Colca. Rotas culturais, observação de cóndores, aventura e natureza.",
   },
   zh: {
-    title: "Inca Travel Peru - 预订旅游和交通 | 全球旅行预订",
-    description: "发现并预订全球最佳旅游和运输服务。真实的旅行体验，价格实惠。",
-    keywords: ["旅游", "旅行", "运输", "预订", "观光", "假期", "体验"],
-    toursTitle: "旅游和活动 | 探索奇妙目的地 | Inca Travel Peru",
-    toursDescription: "发现令人着迷的目的地的真实旅游体验。专业的当地导游，具有竞争力的价格和安全预订。",
-    transportsTitle: "旅行交通 | 公交车、出租车和接送服务 | Inca Travel Peru",
-    transportsDescription: "为您的旅行预订可靠的交通工具。接送服务、公交车和专业运输选项。",
-    privateTransportsTitle: "Cusco Private Transport | Direct Transfers | Inca Travel Peru",
+    title: "Inca Travel Peru - 预订旅游与交通 | 国际旅行",
+    description:
+      "预订奇瓦伊至库斯科或库斯科至奇瓦伊的大巴，每日发车。科尔卡峡谷、卡瓦纳孔德、库斯科和阿雷基帕旅游。价格实惠，在线预订。",
+    keywords: [
+      "奇瓦伊库斯科", "库斯科奇瓦伊", "Chivay Cusco", "Cusco Chivay",
+      "科尔卡峡谷大巴", "Colca Canyon", "卡瓦纳孔德库斯科", "科尔卡旅游",
+      "奇瓦伊交通", "卡瓦纳孔德库斯科", "库斯科旅游", "库斯科交通",
+    ],
+    toursTitle: "旅游观光 | 探索精彩目的地 | Inca Travel Peru",
+    toursDescription:
+      "探索从库斯科到科尔卡峡谷、奇瓦伊和卡瓦纳孔德的旅游路线。本地导游，每日出发，安全在线预订。",
+    transportsTitle: "旅行交通 | 大巴、出租车与接送 | Inca Travel Peru",
+    transportsDescription:
+      "预订奇瓦伊至库斯科或库斯科至奇瓦伊的大巴。每日发车，价格实惠，库斯科、奇瓦伊、卡瓦纳孔德与科尔卡峡谷间的直达服务。",
+    privateTransportsTitle: "库斯科私人交通 | 直达接送服务 | Inca Travel Peru",
     privateTransportsDescription:
-      "Book private transport in Cusco, tourist routes, flexible schedules, and direct WhatsApp support for travelers and groups.",
-    experiencesTitle: "Peru Experiences | Tours and Local Activities | Inca Travel Peru",
+      "库斯科奇瓦伊私人交通，提供WhatsApp支持，灵活时间安排，团体车辆。库斯科 - 奇瓦伊 - 卡瓦纳孔德直达路线。",
+    experiencesTitle: "秘鲁体验 | 旅游与当地活动 | Inca Travel Peru",
     experiencesDescription:
-      "Explore selected Peru experiences with cultural routes, adventure, nature, and direct reservations for travelers and groups.",
+      "在库斯科、奇瓦伊和科尔卡峡谷享受独特体验。文化线路、观赏神鹰、冒险与自然。",
   },
   ja: {
-    title: "Inca Travel Peru - ツアーと交通を予約 | グローバル旅行予約",
-    description: "世界中の最高のツアーと交通サービスを発見して予約します。本物の旅行体験を手頃な価格で。",
-    keywords: ["ツアー", "旅行", "交通", "予約", "観光", "休暇", "体験"],
-    toursTitle: "ツアーとアクティビティ | 魅力的な目的地を探索 | Inca Travel Peru",
+    title: "Inca Travel Peru - ツアー・交通予約 | 国際旅行",
+    description:
+      "チビャイ⇔クスコのバスを毎日運行。コルカ峡谷、カバナコンデ、クスコ、アレキパへのツアーも。リーズナブルな価格でオンライン予約。",
+    keywords: [
+      "チビャイ クスコ", "クスコ チビャイ", "Chivay Cusco", "Cusco Chivay",
+      "コルカ峡谷大巴", "Colca Canyon", "カバナコンデ クスコ", "コルカ ツアー",
+      "チビャイ交通", "カバナコンデ クスコ", "クスコ ツアー", "クスコ 交通",
+    ],
+    toursTitle: "観光ツアー | 素晴らしい目的地を探索 | Inca Travel Peru",
     toursDescription:
-      "魅力的な目的地で本物のツアー体験を発見します。経験豊富な現地ガイド、競争力のある価格、安全な予約。",
-    transportsTitle: "旅行交通 | バス、タクシー、送迎サービス | Inca Travel Peru",
-    transportsDescription: "旅行のための信頼できる交通機関を予約します。送迎サービス、バス、専門的な交通オプション。",
-    privateTransportsTitle: "Cusco Private Transport | Direct Transfers | Inca Travel Peru",
+      "クスコからコルカ峡谷、チビャイ、カバナコンデへのツアーを探索。地元ガイド、毎日出発、安全なオンライン予約。",
+    transportsTitle: "旅行交通 | バス・タクシー・送迎 | Inca Travel Peru",
+    transportsDescription:
+      "チビャイ⇒クスコまたはクスコ⇒チビャイのバスを予約。毎日運行、リーズナブルな価格、クスコ・チビャイ・カバナコンデ・コルカ峡谷間の直行サービス。",
+    privateTransportsTitle: "クスコのプライベート交通 | 直行送迎 | Inca Travel Peru",
     privateTransportsDescription:
-      "Book private transport in Cusco, tourist routes, flexible schedules, and direct WhatsApp support for travelers and groups.",
-    experiencesTitle: "Peru Experiences | Tours and Local Activities | Inca Travel Peru",
+      "クスコ⇔チビャイのプライベート送迎。WhatsAppサポート、柔軟な時間、グループ対応車両。クスコ - チビャイ - カバナコンデ直行ルート。",
+    experiencesTitle: "ペルーの体験 | ツアー & ローカルアクティビティ | Inca Travel Peru",
     experiencesDescription:
-      "Explore selected Peru experiences with cultural routes, adventure, nature, and direct reservations for travelers and groups.",
+      "クスコ、チビャイ、コルカ峡谷でのユニークな体験。文化ルート、コンドル観察、アドベンチャーと自然。",
   },
   ru: {
-    title: "Inca Travel Peru - Забронируйте Туры и Транспорт | Глобальное Бронирование Путешествий",
+    title: "Inca Travel Peru - Бронирование Туров и Транспорта | Международные Путешествия",
     description:
-      "Откройте и забронируйте лучшие туры и услуги транспорта по всему миру. Подлинные впечатления от путешествий по доступным ценам.",
-    keywords: ["туры", "путешествия", "транспорт", "бронирование", "туризм", "отпуск", "впечатления"],
-    toursTitle: "Туры и Деятельность | Исследуйте Удивительные Направления | Inca Travel Peru",
+      "Забронируйте автобус Чивай Куско или Куско Чивай с ежедневными отправлениями. Туры в Каньон Колка, Кабананконде, Куско и Арекипу. Доступные цены и онлайн-бронирование.",
+    keywords: [
+      "Чивай Куско", "Куско Чивай", "Chivay Cusco", "Cusco Chivay",
+      "автобус Чивай Куско", "Каньон Колка", "Кабананконде Куско", "тур Колка",
+      "транспорт Чивай", "Кабананконде Куско", "туры Куско", "транспорт Куско",
+    ],
+    toursTitle: "Туристические Туры | Исследуйте Невероятные Направления | Inca Travel Peru",
     toursDescription:
-      "Откройте подлинные туры в увлекательные направления. Опытные местные гиды, конкурентные цены и безопасное бронирование.",
+      "Исследуйте туры из Куско в Каньон Колка, Чивай и Кабананконде. Местные гиды, ежедневные отправления и безопасное онлайн-бронирование.",
     transportsTitle: "Транспорт для Путешествий | Автобусы, Такси и Трансферы | Inca Travel Peru",
     transportsDescription:
-      "Забронируйте надежный транспорт для ваших путешествий. Услуги трансферов, автобусы и профессиональные транспортные варианты.",
-    privateTransportsTitle: "Private Transport in Cusco | Direct Transfers | Inca Travel Peru",
+      "Забронируйте автобус Чивай Куско или Куско Чивай. Ежедневные рейсы, доступные цены и прямой сервис между Куско, Чивай, Кабананконде и Каньоном Колка.",
+    privateTransportsTitle: "Частный Транспорт в Куско | Прямые Трансферы | Inca Travel Peru",
     privateTransportsDescription:
-      "Book private transport in Cusco, tourist routes, flexible schedules, and direct WhatsApp support for travelers and groups.",
-    experiencesTitle: "Peru Experiences | Tours and Local Activities | Inca Travel Peru",
+      "Частный транспорт Куско Чивай с поддержкой WhatsApp, гибким расписанием и транспортом для групп. Прямой маршрут Куско - Чивай - Кабананконде.",
+    experiencesTitle: "Впечатления в Перу | Туры и Местные Активности | Inca Travel Peru",
     experiencesDescription:
-      "Explore selected Peru experiences with cultural routes, adventure, nature, and direct reservations for travelers and groups.",
+      "Уникальные впечатления в Куско, Чивай и Каньоне Колка. Культурные маршруты, наблюдение за кондорами, приключения и природа.",
   },
-}
+};
 
-export function generateLocaleSEO(locale: Locale, type: LocaleSEOType): Metadata {
-  const seo = seoTranslations[locale]
-  const baseUrl = siteConfig.url
-  const pageByType: Record<LocaleSEOType, { title: string; description: string; path: string }> = {
+export function generateLocaleSEO(
+  locale: Locale,
+  type: LocaleSEOType,
+): Metadata {
+  const seo = seoTranslations[locale];
+  const baseUrl = siteConfig.url;
+  const pageByType: Record<
+    LocaleSEOType,
+    { title: string; description: string; path: string }
+  > = {
     home: { title: seo.title, description: seo.description, path: "" },
-    tours: { title: seo.toursTitle, description: seo.toursDescription, path: "tours" },
-    transports: { title: seo.transportsTitle, description: seo.transportsDescription, path: "transports" },
+    tours: {
+      title: seo.toursTitle,
+      description: seo.toursDescription,
+      path: "tours",
+    },
+    transports: {
+      title: seo.transportsTitle,
+      description: seo.transportsDescription,
+      path: "transports",
+    },
     "transport-private": {
       title: seo.privateTransportsTitle,
       description: seo.privateTransportsDescription,
       path: "transport-private",
     },
-    experiences: { title: seo.experiencesTitle, description: seo.experiencesDescription, path: "experiences" },
-  }
-  const page = pageByType[type]
-  const pageUrl = page.path ? `${baseUrl}/${locale}/${page.path}` : `${baseUrl}/${locale}`
+    experiences: {
+      title: seo.experiencesTitle,
+      description: seo.experiencesDescription,
+      path: "experiences",
+    },
+  };
+  const page = pageByType[type];
+  const pageUrl = page.path
+    ? `${baseUrl}/${locale}/${page.path}`
+    : `${baseUrl}/${locale}`;
 
-  const alternateLanguages: Record<string, string | URL> = {}
+  const alternateLanguages: Record<string, string | URL> = {};
 
   locales.forEach((lang) => {
-    alternateLanguages[lang] = page.path ? `${baseUrl}/${lang}/${page.path}` : `${baseUrl}/${lang}`
-  })
+    alternateLanguages[lang] = page.path
+      ? `${baseUrl}/${lang}/${page.path}`
+      : `${baseUrl}/${lang}`;
+  });
 
   const metadata: Metadata = {
     title: page.title,
@@ -242,34 +320,41 @@ export function generateLocaleSEO(locale: Locale, type: LocaleSEOType): Metadata
       description: page.description,
       images: [absoluteUrl(siteConfig.ogImage)],
     },
-  }
+  };
 
-  return metadata
+  return metadata;
 }
 
 export function generateTourSEO(
   locale: Locale,
   tour: {
-    title: string
-    description: string
-    currentPrice: number
+    title: string;
+    description: string;
+    currentPrice: number;
   },
   slug: string,
 ): Metadata {
-  const baseUrl = siteConfig.url
-  const fullUrl = `${baseUrl}/${locale}/tours/${slug}`
+  const baseUrl = siteConfig.url;
+  const fullUrl = `${baseUrl}/${locale}/tours/${slug}`;
 
-  const seoDescription = `${tour.description} Reserve desde $${tour.currentPrice} por persona.`
+  const seoDescription = `${tour.description} Reserve desde $${tour.currentPrice} por persona.`;
 
-  const alternateLanguages: Record<string, string | URL> = {}
+  const alternateLanguages: Record<string, string | URL> = {};
   locales.forEach((lang) => {
-    alternateLanguages[lang] = `${baseUrl}/${lang}/tours/${slug}`
-  })
+    alternateLanguages[lang] = `${baseUrl}/${lang}/tours/${slug}`;
+  });
 
   return {
     title: `${tour.title} | Tours | Inca Travel Peru`,
     description: seoDescription,
-    keywords: [tour.title, "tour", "viaje", "reserva", "experiencia", "destino"],
+    keywords: [
+      tour.title,
+      "tour",
+      "viaje",
+      "reserva",
+      "experiencia",
+      "destino",
+    ],
     alternates: {
       languages: alternateLanguages,
       canonical: fullUrl,
@@ -294,43 +379,64 @@ export function generateTourSEO(
       description: seoDescription,
       images: [absoluteUrl(siteConfig.ogImage)],
     },
-  }
+  };
 }
 
 export function generateTransportSEO(
   locale: Locale,
   transport: {
-    title: string
-    description: string
-    currentPrice: number
-    image?: string
-    origin?: string
-    destination?: string
+    title: string;
+    description: string;
+    currentPrice: number;
+    image?: string;
+    origin?: string;
+    destination?: string;
   },
   slug: string,
 ): Metadata {
-  const baseUrl = siteConfig.url
-  const fullUrl = `${baseUrl}/${locale}/transports/${slug}`
+  const baseUrl = siteConfig.url;
+  const fullUrl = `${baseUrl}/${locale}/transports/${slug}`;
 
-  const routeText = transport.origin && transport.destination ? ` Ruta ${transport.origin} a ${transport.destination}.` : ""
-  const seoDescription = `${transport.description}${routeText} Reserva desde $${transport.currentPrice} por persona.`
-  const image = transport.image || siteConfig.ogImage
+  const routeKeywords: string[] = [];
+  if (transport.origin && transport.destination) {
+    routeKeywords.push(
+      `${transport.origin} ${transport.destination}`,
+      `${transport.destination} ${transport.origin}`,
+      `bus ${transport.origin} ${transport.destination}`,
+      `transporte ${transport.origin} ${transport.destination}`,
+    );
+  }
 
-  const alternateLanguages: Record<string, string | URL> = {}
+  const routeText =
+    transport.origin && transport.destination
+      ? ` Ruta directa ${transport.origin} - ${transport.destination}.`
+      : "";
+  const seoDescription = `${transport.description}${routeText} Reserva desde $${transport.currentPrice} USD.`;
+  const image = transport.image || siteConfig.ogImage;
+  const seoTitle = `${transport.title} | ${siteConfig.name}`;
+
+  const alternateLanguages: Record<string, string | URL> = {};
   locales.forEach((lang) => {
-    alternateLanguages[lang] = `${baseUrl}/${lang}/transports/${slug}`
-  })
+    alternateLanguages[lang] = `${baseUrl}/${lang}/transports/${slug}`;
+  });
 
   return {
-    title: `${transport.title} | Transport | Inca Travel Peru`,
+    title: seoTitle,
     description: seoDescription,
-    keywords: [transport.title, "transporte", "viaje", "reserva", "traslado"],
+    keywords: [
+      transport.title,
+      ...routeKeywords,
+      "transporte",
+      "bus",
+      "traslado",
+      "reserva",
+    ],
     alternates: {
       languages: alternateLanguages,
       canonical: fullUrl,
     },
     openGraph: {
-      title: `${transport.title} | Transport | Inca Travel Peru`,
+      title: seoTitle,
       description: seoDescription,
       url: fullUrl,
       type: "website",
@@ -345,9 +451,51 @@ export function generateTransportSEO(
     },
     twitter: {
       card: "summary_large_image",
-      title: `${transport.title} | Transport | Inca Travel Peru`,
+      title: seoTitle,
       description: seoDescription,
       images: [absoluteUrl(image)],
     },
-  }
+  };
+}
+
+export function generateTransportJsonLd(transport: {
+  title: string;
+  description: string;
+  currentPrice: number;
+  image?: string;
+  origin?: string;
+  destination?: string;
+  url: string;
+}): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: transport.title,
+    description: transport.description,
+    image: transport.image || siteConfig.ogImage,
+    brand: { "@type": "Brand", name: siteConfig.name },
+    offers: {
+      "@type": "Offer",
+      url: transport.url,
+      priceCurrency: "USD",
+      price: transport.currentPrice,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: siteConfig.name,
+        url: siteConfig.url,
+      },
+    },
+    ...(transport.origin &&
+      transport.destination && {
+        additionalProperty: [
+          { "@type": "PropertyValue", name: "Origen", value: transport.origin },
+          {
+            "@type": "PropertyValue",
+            name: "Destino",
+            value: transport.destination,
+          },
+        ],
+      }),
+  });
 }

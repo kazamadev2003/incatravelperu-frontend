@@ -1,5 +1,5 @@
 import type React from "react"
-import { generateTransportSEO } from "@/lib/seo/seo-config"
+import { generateTransportSEO, generateTransportJsonLd, siteConfig } from "@/lib/seo/seo-config"
 import { API_BASE_URL } from "@/lib/constants"
 import { defaultLocale, isValidLocale, type Locale } from "@/lib/i18n/config"
 import type { Metadata } from "next"
@@ -28,18 +28,12 @@ export async function generateMetadata({
   const { locale: rawLocale, slug } = await params
   const locale: Locale = isValidLocale(rawLocale) ? rawLocale : defaultLocale
 
-  // Fetch transport data for dynamic SEO
   try {
     const url = new URL(`${API_BASE_URL}/transports/slug/${slug}`)
     url.searchParams.set("lang", locale)
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 60 },
-    })
-
-    if (!response.ok) {
-      throw new Error("Transport not found")
-    }
+    const response = await fetch(url.toString(), { next: { revalidate: 60 } })
+    if (!response.ok) throw new Error("Transport not found")
 
     const transport = unwrapTransportResponse(await response.json())
 
@@ -56,10 +50,9 @@ export async function generateMetadata({
       slug,
     )
   } catch {
-    // Fallback SEO if data fetch fails
     return {
-      title: `Transport | eTourism`,
-      description: "Book reliable transportation with eTourism.",
+      title: `Transporte | ${siteConfig.name}`,
+      description: "Reserva transporte confiable para tu viaje.",
       alternates: {
         languages: {
           es: `/es/transports/${slug}`,
@@ -77,10 +70,46 @@ export async function generateMetadata({
   }
 }
 
-export default function TransportDetailLayout({
+export default async function TransportDetailLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ locale: string; slug: string }>
 }) {
-  return <>{children}</>
+  const { locale: rawLocale, slug } = await params
+  const locale: Locale = isValidLocale(rawLocale) ? rawLocale : defaultLocale
+
+  let jsonLd: string | null = null
+  try {
+    const url = new URL(`${API_BASE_URL}/transports/slug/${slug}`)
+    url.searchParams.set("lang", locale)
+    const response = await fetch(url.toString(), { next: { revalidate: 60 } })
+    if (response.ok) {
+      const transport = unwrapTransportResponse(await response.json())
+      jsonLd = generateTransportJsonLd({
+        title: transport.title || "Transport",
+        description: transport.description || "",
+        currentPrice: transport.currentPrice || 0,
+        image: transport.images?.[0]?.url,
+        origin: transport.origin?.name,
+        destination: transport.destination?.name,
+        url: `${siteConfig.url}/${locale}/transports/${slug}`,
+      })
+    }
+  } catch {
+    // JSON-LD es opcional, no bloquea el render
+  }
+
+  return (
+    <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
+      {children}
+    </>
+  )
 }

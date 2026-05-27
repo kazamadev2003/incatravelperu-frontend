@@ -118,9 +118,7 @@ useEffect(() => {
     ) || []
 
   const totalPages = Math.ceil((ordersData?.total || 0) / ITEMS_PER_PAGE)
-  const startIndex = 0 // Data is already paginated from API
-  const endIndex = filteredOrders.length
-  const paginatedOrders = filteredOrders // No need to slice, API already handled pagination
+  const paginatedOrders = filteredOrders
 
   const getStatusBadge = (status: OrderStatus) => {
     switch (status) {
